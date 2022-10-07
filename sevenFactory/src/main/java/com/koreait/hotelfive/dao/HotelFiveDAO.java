@@ -1,6 +1,7 @@
 package com.koreait.hotelfive.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.koreait.hotelfive.dto.GuestRoomDTO;
@@ -49,6 +50,15 @@ public interface HotelFiveDAO {
    // registor 회원가입
    public void registor(MemberDTO mDTO);
    
+   //카카오 회원 호출
+   public MemberDTO findKakao(HashMap<String, Object> userInfo);
+   
+   // 카카오 회원가입
+   public void kakaoRegistor(HashMap<String, Object> userinfo);
+   
+   // 카카오 회원찾기
+   public MemberDTO selectBymId(String mId);
+   
    // 아이디 찾기 
    public MemberDTO findId(String mName, String mEmial);
    
@@ -60,6 +70,9 @@ public interface HotelFiveDAO {
    
    // 로그인
    public MemberDTO login(String mId, String mPw);
+   
+   // 카카오 로그인
+   public MemberDTO kakaologin(String id, String name, String email);
 
    // 아이디 중복체크
    public MemberDTO idCheck(String mId);
@@ -244,6 +257,13 @@ public interface HotelFiveDAO {
    public ArrayList<ReservationViewDTO> nonMemberReservationList(Map<String, Integer> map2);
 
    public void deleteNonMemberReservationNumber(int rNo);
+
+   
+
+
+  
+
+
 
 
 

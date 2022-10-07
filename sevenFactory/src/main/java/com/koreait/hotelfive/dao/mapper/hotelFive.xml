@@ -62,12 +62,29 @@
       SELECT NMID FROM NONMEMBER WHERE NMPHONE = #{param1}
    </select>
 
-   <insert id="registor"
-      parameterType="com.koreait.hotelfive.dto.MemberDTO">
+    <insert id="registor" parameterType="com.koreait.hotelfive.dto.MemberDTO">
+   <![CDATA[
+   INSERT INTO MEMBER (MNO, MID, MPW, MNAME, MBIRTH, MEMAIL, MPHONE  ,MADDR1, MADDR2, MZIPCODE, MREGDATE, MGRADE, MPOINT, MISWITHDRAWAL, MRIGHT)
+   VALUES (NEXTVAL(MEMBER_SEQ), #{mId}, #{mPw}, #{mName}, #{mBirth}, #{mEmail}, #{mPhone}, #{mAddr1}, #{mAddr2}, #{mZipcode} ,sysdate() ,0,0,0,0)
+   ]]>
+   </insert>
+   <!-- 카카오 회원 등록 -->
+   <insert id="kakaoRegistor"
+      parameterType="java.util.HashMap">
       INSERT INTO MEMBER (MNO, MID, MPW, MNAME, MPHONE, MEMAIL, MADDR1, MADDR2, MZIPCODE, MREGDATE, MGRADE, MPOINT, MISWITHDRAWAL, MRIGHT) VALUES ((SELECT IFNULL(MAX(MNO) + 1, 1) FROM MEMBER AS m), #{mId}, #{mPw}, #{mName}, #{mPhone}, #{mEmail}, #{mAddr1}, #{mAddr2}, #{mZipcode} ,CURRENT_TIMESTAMP() ,0,0,0,0)
    </insert>
 
-
+   <!-- 카카오 회원 찾기 -->
+	<select id="findKakao" parameterType="java.util.HashMap" resultType="com.koreait.hotelfive.dto.MemberDTO">
+		select * from kakao_table where MNAME=#{nickname} and MEMAIL=#{email}
+	</select>
+	
+	<!-- 아이디로 회원 찾기 -->
+	<select id="selectBymId"
+      resultType="com.koreait.hotelfive.dto.MemberDTO">
+      SELECT MNO, MID, MPW, MNAME, MPHONE, MEMAIL, MZIPCODE, MADDR1, MADDR2, MREGDATE, MGRADE, MPOINT, MISWITHDRAWAL, MRIGHT FROM MEMBER WHERE MID = #{mId}
+   </select>
+   
    <select id="findId"
       resultType="com.koreait.hotelfive.dto.MemberDTO">
       SELECT MNO, MID, MPW, MNAME, MPHONE, MEMAIL, MADDR1, MADDR2, MZIPCODE, MREGDATE, MGRADE, MPOINT, MISWITHDRAWAL, MRIGHT FROM MEMBER WHERE MNAME = #{param1} AND MEMAIL = #{param2}
@@ -96,7 +113,11 @@
       resultType="com.koreait.hotelfive.dto.MemberDTO">
       SELECT MNO, MID, MPW, MNAME, MPHONE, MEMAIL, MADDR1, MADDR2, MZIPCODE, MREGDATE, MGRADE, MPOINT, MISWITHDRAWAL, MRIGHT FROM MEMBER WHERE MID = #{param1} AND MPW = #{param2} ORDER BY MNO
    </select>
-
+   <!-- 카카오 로그인 -->
+	<select id="kakaologin"
+      resultType="com.koreait.hotelfive.dto.MemberDTO">
+      SELECT MNO, MID, MPW, MNAME, MPHONE, MEMAIL, MADDR1, MADDR2, MZIPCODE, MREGDATE, MGRADE, MPOINT, MISWITHDRAWAL, MRIGHT FROM MEMBER WHERE MID=${param1} AND MNAME = #{param2} AND MEMAIL = #{param3} ORDER BY MNO
+   </select>
 
    <!-- 호텔 리스트 -->
    <select id="hotelList" resultType="com.koreait.hotelfive.dto.HotelDTO">

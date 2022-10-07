@@ -25,7 +25,7 @@ public class EmailAuthCommand implements Command {
 			// SimpleMailMessage 클래스가 이메일 내용을 작성한다.
 			SimpleMailMessage message = new SimpleMailMessage();
 			
-			message.setFrom("thdwltjq3101@naver.com");  // 보내는 사람의 메일 주소
+			message.setFrom("rkdgustjwns@naver.com");  // 보내는 사람의 메일 주소
 			message.setTo(request.getParameter("mEmail"));  // 받는 사람의 메일 주소
 			message.setSubject("인증메일입니다.");  // 제목
 			authKey = (long)(Math.random() * 100000) + 12345;  // 자유롭게 인증키 생성

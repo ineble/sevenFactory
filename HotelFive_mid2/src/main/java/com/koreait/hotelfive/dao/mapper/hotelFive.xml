@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.koreait.hotelfive.dao.HotelFiveDAO">
+
+
+   <!-- 예약가능한 객실 검색하기 -->
+   <!-- <select id="selectBookableList"
+      resultType="com.koreait.hotelfive.dto.GuestRoomDTO">
+      SELECT * FROM GUESTROOM WHERE GNO NOT IN (SELECT GNO FROM RESERVATION WHERE RCHECKIN <![CDATA[ < ]]> #{param1} AND RCHECKOUT <![CDATA[ > ]]> #{param2} )
+   </select> -->
+	 <select id="selectBookableList"
+      resultType="com.koreait.hotelfive.dto.HotelDTO">
+      SELECT * FROM HOTEL
+   </select>
+   
+   <select id="selectMyReservation"
+      resultType="com.koreait.hotelfive.dto.ReservationDTO">
+      SELECT RNO, R.GNO, R.MNO, RAPPROVAL, RPEOPLE, RPRICE, RCHECKIN, RCHECKOUT, GNAME,R.HNO FROM RESERVATION R, GUESTROOM G WHERE R.GNO = G.GNO AND MNO = #{mNo}
+   </select>
+
+   <delete id="reservationCancle">
+      DELETE FROM RESERVATION WHERE RNO = #{rNo}
+   </delete>
+
+   <select id="selectGuestRoom"
+      resultType="com.koreait.hotelfive.dto.GuestRoomDTO">
+      SELECT * FROM GUESTROOM WHERE gNo = #{gNo}
+   </select>
+   <!--NMPHONE으로 수정 4개-->
+   <insert id="kakaopayinsertReservation1">
+      INSERT INTO RESERVATION (RNO, GNO, MNO , HNO, NMPHONE, RAPPROVAL, RPEOPLE, RPRICE, RCHECKIN, RCHECKOUT) VALUES ((SELECT IFNULL(MAX(RNO) + 1, 1) FROM RESERVATION AS re), #{param1}, #{param2}, #{param3}, NULL, 0, #{param4} , #{param5}, #{param6},#{param7})
+   </insert>
+   
+   <insert id="kakaopayinsertReservation2">
+      INSERT INTO RESERVATION (RNO, GNO, MNO , HNO, NMPHONE, RAPPROVAL, RPEOPLE, RPRICE, RCHECKIN, RCHECKOUT) VALUES ((SELECT IFNULL(MAX(RNO) + 1, 1) FROM RESERVATION AS re), #{param1}, 0 ,#{param2},#{param3},0 , #{param4} , #{param5}, #{param6},#{param7})
+   </insert>
+
+   <select id="confirmReservation" resultType="Integer">
+      SELECT RNO FROM RESERVATION WHERE GNO = #{param1} AND RCHECKIN = #{param2} AND RCHECKOUT = #{param3}
+   </select>
+   
+   <!-- 비회원 예약 정보 가져오기 -->
+   <select id="selectNonmemberReservation"
+      resultType="com.koreait.hotelfive.dto.ReservationDTO">
+      SELECT R.RNO, R.GNO, R.NMPHONE, R.RAPPROVAL, RPEOPLE, RPRICE, RCHECKIN, RCHECKOUT, GNAME FROM RESERVATION R, GUESTROOM G, NONMEMBER N WHERE R.GNO = G.GNO AND R.NMPHONE = (SELECT NMPHONE FROM NONMEMBER WHERE NMPHONE = #{param2})
+   </select>
+
+   <!-- 비회원 정보 존재 유무 검색 -->
+   <select id="selectNonmemberExistence" resultType="int">
+      SELECT COUNT(*) FROM NONMEMBER WHERE NMPHONE = #{nmPhone}
+   </select>
+
+   <!-- 비회원 정보 저장 -->
+   <insert id="insertNonMember">
+      INSERT INTO NONMEMBER (NMID, NMNAME, NMPHONE) VALUES ((SELECT IFNULL(MAX(NMID) + 1, 1) FROM NONMEMBER AS n), #{param1}, #{param2})
+   </insert>
+
+   <!-- 비회원 예약 취소 -->
+   <delete id="deleteNonMemberReservationNumber"
+      parameterType="int">
+      DELETE FROM RESERVATION WHERE RNO = #{rNo}
+   </delete>
+
+   <!-- 비회원 아이디 가져오기 -->
+   <select id="selectNmId" resultType="String">
+      SELECT NMPHONE FROM NONMEMBER WHERE NMPHONE = #{param1}
+   </select>
+
+      <insert id="registor" parameterType="com.koreait.hotelfive.dto.MemberDTO">
+   <![CDATA[
+   INSERT INTO MEMBER (MNO, MID, MPW, MNAME, MBIRTH, MPHONE, MEMAIL ,MADDR1, MADDR2, MZIPCODE, MREGDATE, MGRADE, MPOINT, MISWITHDRAWAL, MRIGHT) VALUES ((SELECT IFNULL(MAX(MNO) + 1,1) FROM MEMBER AS m) , #{mId}, #{mPw}, #{mName}, #{mBirth},#{mPhone}, #{mEmail}, #{mAddr1}, #{mAddr2}, #{mZipcode} ,sysdate() ,0,0,0,0)
+   ]]>
+   </insert>
+
+   <select id="findId"
+      resultType="com.koreait.hotelfive.dto.MemberDTO">
+      SELECT MNO, MID, MPW, MNAME, MBIRTH, MPHONE, MEMAIL, MADDR1, MADDR2, MZIPCODE, MREGDATE, MGRADE, MPOINT, MISWITHDRAWAL, MRIGHT FROM MEMBER WHERE MNAME = #{param1} AND MEMAIL = #{param2}
+   </select>
+
+   <select id="idCheck"
+      resultType="com.koreait.hotelfive.dto.MemberDTO">
+      SELECT MNO, MID, MPW, MNAME, MBIRTH, MPHONE, MEMAIL, MADDR1, MADDR2, MZIPCODE, MREGDATE, MGRADE, MPOINT, MISWITHDRAWAL, MRIGHT FROM MEMBER WHERE MID = #{mId}
+   </select>
+
+   <select id="emailCheck"
+      resultType="com.koreait.hotelfive.dto.MemberDTO">
+      SELECT MNO, MID, MPW, MNAME, MBIRTH, MPHONE, MEMAIL, MADDR1, MADDR2, MZIPCODE, MREGDATE, MGRADE, MPOINT, MISWITHDRAWAL, MRIGHT FROM MEMBER WHERE MEMAIL = #{mEmail}
+   </select>
+   
+   <select id="phoneCheck"
+      resultType="com.koreait.hotelfive.dto.MemberDTO">
+      SELECT MNO, MID, MPW, MNAME, MBIRTH, MPHONE, MEMAIL, MADDR1, MADDR2, MZIPCODE, MREGDATE, MGRADE, MPOINT, MISWITHDRAWAL, MRIGHT FROM MEMBER WHERE mPhone = #{mPhone}
+   </select>
+
+   <select id="findPw"
+      resultType="com.koreait.hotelfive.dto.MemberDTO">
+      SELECT * FROM MEMBER WHERE MID = #{param1} AND MEMAIL =#{param2}
+   </select>
+
+   <update id="changePw">
+      UPDATE MEMBER SET MPW = #{param1} WHERE MID = #{param2}
+   </update>
+
+   <select id="login"
+      resultType="com.koreait.hotelfive.dto.MemberDTO">
+      SELECT MNO, MID, MPW, MNAME, MBIRTH,MPHONE, MEMAIL, MADDR1, MADDR2, MZIPCODE, MREGDATE, MGRADE, MPOINT, MISWITHDRAWAL, MRIGHT FROM MEMBER WHERE MID = #{param1} AND MPW = #{param2} ORDER BY MNO
+   </select>
+
+<!-- 호텔 리스트 --> 
+   <select id="hotelList" resultType="com.koreait.hotelfive.dto.HotelDTO">
+   	SELECT h.* FROM HOTEL AS h
+   </select>
+   
+   <!-- 호텔 최저가 -->
+   <select id="hotelminprice" resultType="int">
+  	SELECT HMINPRICE FROM HOTEL WHERE HNO=#{hNo}
+   </select>
+   
+   <!-- 객실정보 리스트 -->
+   <select id="guestRoomList" 
+      resultType="com.koreait.hotelfive.dto.GuestRoomDTO">
+      SELECT * FROM GUESTROOM WHERE (GNO NOT IN (SELECT GNO FROM RESERVATION WHERE RCHECKIN <![CDATA[<=]]> #{param1} AND RCHECKOUT <![CDATA[>=]]> #{param2})) AND  HNO=#{param3}
+   </select>
+   <select id="guestRoomListAll" parameterType="int"
+   resultType="com.koreait.hotelfive.dto.GuestRoomDTO">
+   	SELECT * FROM GUESTROOM WHERE HNO =#{hNo}
+   </select>
+
+  <!--  <select id="reviewGuestroomList" parameterType="int"
+      resultType="com.koreait.hotelfive.dto.ReviewDTO">
+      SELECT * FROM GUESTROOM WHERE GNO IN (SELECT GNO FROM reservation WHERE MNO = #{mNo}  AND GNO =#{gNo} );
+   </select> -->
+   
+    <!-- 객실상세정보 -->
+   <select id="guestRoomView" 
+      resultType="com.koreait.hotelfive.dto.GuestRoomDTO">
+      SELECT * FROM GUESTROOM WHERE HNO=#{hNo} 
+   </select>
+   
+  <!-- 객실상세정보 -->
+   <!-- <select id="guestRoomView" parameterType="HashMap"
+      resultType="com.koreait.hotelfive.dto.GuestRoomDTO">
+      SELECT * FROM GUESTROOM WHERE HNO=#{hNo} AND GNO = #{gNo} 
+   </select>  -->
+
+   <!-- 객실평점구하기 -->
+   <select id="guestRoomRating" resultType="Double">
+      SELECT ROUND(AVG(RRATING), 2) FROM REVIEW WHERE GNAME = #{gName} AND RISDELETE = 1
+   </select>
+   
+
+   <!-- 객실평점투표자수구하기 -->
+   <select id="guestRoomRatingVote" resultType="int">
+      SELECT COUNT(*) FROM REVIEW WHERE GNAME = #{gName} AND RISDELETE = 1
+   </select>
+
+   <!-- qna -->
+   <select id="selectQNABoard" parameterType="Map"
+      resultType="com.koreait.hotelfive.dto.QNADTO">
+      SELECT A.* FROM QNA AS A WHERE QISDELETE=1 ORDER BY QNO DESC  LIMIT #{beginRecord2},5;
+      <!-- QISDELETE 0:삭제 1:존재 -->
+   </select>
+
+
+
+
+   <select id="getTotalRecord" resultType="int">
+      SELECT COUNT(*) FROM QNA
+   </select>
+
+   <select id="selectByqNo"
+      resultType="com.koreait.hotelfive.dto.QNADTO">
+      SELECT QNO, QPW, MID, QTITLE, QCONTENT, QNOTICEDATE FROM QNA WHERE QNO = #{qNo}
+   </select>
+
+   <update id="updateQNABoard">
+      UPDATE QNA SET QTITLE = #{param1}, QCONTENT = #{param2} WHERE QNO = #{param3}
+   </update>
+
+   <update id="deleteQNABoard">
+      UPDATE QNA SET QISDELETE = 0 WHERE QNO = #{qNo}
+   </update>
+
+   <insert id="insertQNABoard1">
+      INSERT INTO QNA (QNO, MID, NMNAME, QTITLE, QPW, QCONTENT, QISDELETE, QNOTICEDATE) VALUES ((SELECT IFNULL(MAX(qNo) + 1, 1) FROM QNA AS q), #{param1}, null , #{param2}, #{param3}, #{param4}, 1, NOW());
+   </insert>
+
+<insert id="insertQNABoard2">
+      INSERT INTO QNA (QNO, MID, NMNAME, QTITLE, QPW, QCONTENT, QISDELETE,QNOTICEDATE) VALUES ((SELECT IFNULL(MAX(qNo) + 1, 1) FROM QNA AS q), null, #{param1}, #{param2}, #{param3}, #{param4}, 1, NOW())
+   </insert>
+
+   <insert id="insertQNABoardReply">
+      INSERT INTO REPLY (RENO, MID, RECONTENT, QNO, RNO, RECATEGORY, RENOTICEDATE) VALUES ((SELECT IFNULL(MAX(reNo) + 1, 1) FROM REPLY AS r), #{param1}, #{param2}, #{param3}, null, 1, CURRENT_TIMESTAMP())
+   </insert>
+
+   <select id="selectQNABoardReply" parameterType="int"
+      resultType="com.koreait.hotelfive.dto.ReplyDTO">
+      SELECT * FROM REPLY WHERE QNO = #{qNo} ORDER BY RENO ASC
+   </select>
+
+   <delete id="deleteQNABoardReply" parameterType="int">
+      DELETE FROM REPLY WHERE RENO = #{reNo}
+   </delete>
+
+   <update id="updateQNABoardReply">
+      UPDATE REPLY SET RECONTENT = #{param1} WHERE RENO = #{param2}
+   </update>
+
+
+
+   <!-- review -->
+   <insert id="ReviewBoardInsert">
+      INSERT INTO REVIEW (RNO, RTITLE, RCONTENT, MID, RFILENAME, RRATING, GNAME, RISDELETE, RREGDATE) VALUES ((SELECT IFNULL(MAX(RNO) + 1, 1) FROM REVIEW AS r), #{param1}, #{param2}, #{param3}, #{param4}, #{param5}, #{param6}, #{param7}, CURRENT_TIMESTAMP())
+   </insert>
+   
+   <select id="selectReviewBoardList" parameterType="Map"
+      resultType="com.koreait.hotelfive.dto.ReviewDTO">
+		SELECT RNO, RTITLE, RCONTENT, MID, RFILENAME, RRATING, GNAME, RISDELETE, RREGDATE FROM review where RISDELETE=1 ORDER BY RNO DESC LIMIT #{beginRecord2},5 
+      <!-- RISDELETE 0:삭제 1:존재 -->
+   </select>
+   
+   <select id="selectReviewBoardList2" 
+      resultType="com.koreait.hotelfive.dto.ReviewDTO">
+		SELECT RNO, RTITLE, RCONTENT, MID, RFILENAME, RRATING, GNAME, RISDELETE, RREGDATE FROM review where RISDELETE=1 ORDER BY RNO DESC;
+      <!-- RISDELETE 0:삭제 1:존재 -->
+   </select>
+
+   <select id="getReviewTotalRecord" resultType="int">
+      SELECT COUNT(*) FROM REVIEW
+   </select>
+
+   <select id="selectReviewBoardByrNo"
+      resultType="com.koreait.hotelfive.dto.ReviewDTO">
+      SELECT RNO, RTITLE, RCONTENT, MID, RFILENAME, RREGDATE, RRATING, RFILENAME, GNAME FROM REVIEW WHERE RNO = #{rNo}
+   </select>
+
+   <delete id="deleteReviewBoardByrNo">
+      UPDATE REVIEW SET RISDELETE = 0 WHERE RNO = #{rNo}
+   </delete>
+
+   <update id="updateReviewBoardByrNo">
+      UPDATE REVIEW SET RTITLE = #{param1}, RCONTENT = #{param2}, RFILENAME = #{param3}, RRATING = #{param4}, GNAME = #{param5} WHERE RNO = #{param6}
+   </update>
+
+   <insert id="insertReviewBoardReply">
+      INSERT INTO REPLY (RENO, MID, RECONTENT, QNO, RNO, RECATEGORY, RENOTICEDATE) VALUES ((SELECT IFNULL(MAX(RENO) + 1, 1) FROM REPLY AS r), #{param1}, #{param2}, null, #{param3}, 0, CURRENT_TIMESTAMP())
+   </insert>
+
+   <select id="selectReviewBoardReply"
+      resultType="com.koreait.hotelfive.dto.ReplyDTO">
+      SELECT RENO, RNO, MID, RECONTENT FROM REPLY WHERE RNO = #{rNo}
+   </select>
+
+   <delete id="deleteReviewBoardReplyByreNo">
+      DELETE FROM REPLY WHERE RENO = #{reNo}
+   </delete>
+
+   <update id="updateReviewBoardReply">
+      UPDATE REPLY SET RECONTENT = #{param1} WHERE RENO = #{param2}
+   </update>
+   <!-- 수정해야함 -->
+   <select id="selectCheckReviewBoardList" parameterType="Map"
+      resultType="com.koreait.hotelfive.dto.ReviewDTO">
+      SELECT * FROM (SET @ROWNUM := 0 SELECT @ROWNUM := @ROWNUM + 1 AS RN, A.* FROM (SELECT * FROM (SELECT @ROWNUM:=0) RN_TB AND REVIEW WHERE RISDELETE =1 AND GNAME = #{gName} ORDER BY RNO DESC) A) WHERE RN BETWEEN #{beginRecord} AND #{endRecord}
+   </select>
+
+   <select id="getReviewTotalCheckRecord" resultType="int">
+      SELECT COUNT(*) FROM REVIEW WHERE GNAME = #{gName} AND RISDELETE = 1
+   </select>
+   <!-- score -->
+   <!-- 게스트 이름으로 평점 불러오기 -->
+   <select id="getguestRoomRating" resultType="Double" >
+      SELECT ROUND(AVG(RRATING), 2) FROM REVIEW WHERE GNAME = #{gName} AND RISDELETE = 1
+   </select>
+   <!-- 게스트 이름으로 평점 투표자 불러오기 -->
+   <select id="getguestRoomRatingvote" resultType="int" >
+       SELECT COUNT(*) FROM REVIEW WHERE GNAME = #{gName} AND RISDELETE = 1
+   </select>
+
+   <!-- notice -->
+ 
+   <select id="selectNoticeBoardList"
+      resultType="com.koreait.hotelfive.dto.NoticeDTO">
+      SELECT NNO, MID, NTITLE, NNOTICEDATE, NHIT, NISDELETE FROM NOTICE N, member M WHERE N.NISDELETE =0 AND M.MNO =1  ORDER BY NNO DESC LIMIT #{beginRecord2},5;
+      <!-- NISDELETE 1:삭제 0:존재 -->
+   </select>
+
+   <select id="getTotalRecordNotice" resultType="int">
+      SELECT COUNT(*) FROM NOTICE
+   </select>
+
+   <insert id="insertNoticeBoard">
+      INSERT INTO NOTICE(NNO, MNO, NTITLE, NCONTENT, NFILENAME, NIMG, NHIT, NISDELETE, NNOTICEDATE) VALUES ((SELECT IFNULL(MAX(NNo) + 1, 1) FROM NOTICE AS n), #{param1}, #{param2}, #{param3}, #{param4}, #{param5}, 0, 0, CURRENT_TIMESTAMP())
+   </insert>
+
+   <select id="selectNoticeBoardBynNo"
+      resultType="com.koreait.hotelfive.dto.NoticeDTO">
+      SELECT NNO, MID, NTITLE, NCONTENT, NFILENAME, NIMG, NNOTICEDATE, NHIT, NISDELETE FROM NOTICE N, MEMBER M WHERE N.MNO = M.MNO AND NNO = #{nNo}
+   </select>
+
+   <update id="deleteNoticeBoard">
+      UPDATE NOTICE SET NISDELETE = 1 WHERE NNO = #{nNo}
+   </update>
+
+   <update id="updateNoticeBoardHit">
+      UPDATE NOTICE SET NHIT = NHIT + 1 WHERE NNO = #{nNo}
+   </update>
+
+	<!-- 송지섭 -->
+	<!-- 카카오 회원 등록 -->
+   <insert id="kakaoRegistor"
+      parameterType="java.util.HashMap">
+      INSERT INTO MEMBER (MNO, MID, MPW, MNAME, MBIRTH, MPHONE, MEMAIL, MADDR1, MADDR2, MZIPCODE, MREGDATE, MGRADE, MPOINT, MISWITHDRAWAL, MRIGHT) VALUES ((SELECT IFNULL(MAX(MNO) + 1, 1) FROM MEMBER AS m),  #{mId}, #{mPw}, #{mName},#{mBirth} ,#{mPhone}, #{mEmail}, #{mAddr1}, #{mAddr2}, #{mZipcode} ,CURRENT_TIMESTAMP() ,0,0,0,0)
+   </insert>
+
+	<!-- 아이디로 회원 찾기 -->
+	<select id="selectBymId" resultType="com.koreait.hotelfive.dto.MemberDTO">
+      SELECT MNO, MID, MPW, MNAME, MBIRTH, MPHONE, MEMAIL, MADDR1, MADDR2, MZIPCODE, MREGDATE, MGRADE, MPOINT, MISWITHDRAWAL, MRIGHT FROM MEMBER WHERE MID = #{mId}
+   </select>
+   <!-- 카카오 로그인 -->
+	<select id="kakaologin" resultType="com.koreait.hotelfive.dto.MemberDTO">
+      SELECT MNO, MID, MPW, MNAME, MBIRTH, MPHONE, MEMAIL, MADDR1, MADDR2, MZIPCODE, MREGDATE, MGRADE, MPOINT, MISWITHDRAWAL, MRIGHT FROM MEMBER WHERE MID=${param1} AND MNAME = #{param2} AND MEMAIL = #{param3} ORDER BY MNO
+   </select>
+    <insert id="insertReservation1">
+      INSERT INTO RESERVATION (RNO, GNO, MNO, NMPHONE, RAPPROVAL, RPEOPLE, RPRICE, RCHECKIN, RCHECKOUT, HNO) VALUES ((SELECT IFNULL(MAX(RNO) + 1, 1) FROM RESERVATION AS re), #{param1}, #{param2}, null,0 , #{param3}, #{param4}, #{param5}, #{param6}, #{param7})
+   </insert>
+    <insert id="selectAllgNOinsertReservation2">
+      INSERT INTO RESERVATION (RNO, GNO, MNO, NMPHONE, RAPPROVAL, RPEOPLE, RPRICE, RCHECKIN, RCHECKOUT, HNO) VALUES ((SELECT IFNULL(MAX(RNO) + 1, 1) FROM RESERVATION AS re), #{param1}, 0, #{param2}, 0, #{param3}, #{param4}, #{param5}, #{param6}, #{param7})
+   </insert>
+   <select id="guestRoomNoList" parameterType="int"
+      resultType="String">
+      SELECT g.GNAME FROM GUESTROOM AS g WHERE HNO=#{hNo}
+   </select>
+   
+
+
+
+
+  <!-- 회원정보 수정하기 -->
+   <update id="memberUpdate">
+      UPDATE MEMBER SET MPW = #{mPw}, MNAME = #{mName}, MBIRTH=#{mBirth} ,MEMAIL = #{mEmail}, 
+      MPHONE = #{mPhone}, MZIPCODE = #{mZipcode}, MADDR1 = #{mAddr1}, MADDR2 = #{mAddr2}
+      WHERE MID = #{mId}
+   </update>
+
+   <!-- ajax 를 이용한 mEmail 조회 -->
+   <select id="selectBymEmail"
+      parameterType="com.koreait.hotelfive.dto.MemberDTO">
+      SELECT * FROM MEMBER WHERE MEMAIL = #{param1}
+   </select>
+
+   <!-- 회원탈퇴 -->
+   <update id="leaveMember">
+      UPDATE MEMBER SET MISWITHDRAWAL = 1 WHERE MID = #{mId}
+   </update>
+
+   
+   <!--  나의 게시글 보기 -->
+   <select resultType="com.koreait.hotelfive.dto.QNADTO"
+      id="selectMyBoardList" parameterType="Map">
+       SELECT A.*, (SELECT COUNT(*) FROM REPLY R WHERE R.QNO = A.QNO) COUNT FROM (SELECT * FROM QNA WHERE QISDELETE = 1 AND MID = #{mId}) A ORDER BY QNO DESC LIMIT 0,10;
+   </select>
+   
+   
+
+   <!-- 관리자! -->
+   <!-- 관리자 전체 회원 리스트 -->
+   <select id="userList"
+      resultType="com.koreait.hotelfive.dto.MemberDTO">
+      SELECT * FROM (SELECT ROWNUM AS RN, A.* FROM ((SELECT * FROM MEMBER ORDER BY MNO DESC) A)) WHERE RN BETWEEN #{beginRecord} AND #{endRecord}
+   </select>
+
+   <!-- 관리자 전체 회원 갯수 -->
+   <select id="getTotalMember" resultType="int"> <!-- 전체회원 by 페이징 -->
+      SELECT COUNT(*) FROM MEMBER
+   </select>
+
+   <!-- 관리자 회원 상세보기 -->
+   <select id="selectBymNo"
+      resultType="com.koreait.hotelfive.dto.MemberDTO">
+      SELECT MNO, MID, MPW, MNAME, MBIRTH, MPHONE ,MEMAIL, MADDR1, MADDR2, MZIPCODE, MREGDATE, MGRADE, MPOINT, MISWITHDRAWAL, MRIGHT FROM MEMBER WHERE MNO = #{mNo}
+   </select>
+
+   <!-- 관리자 회원 추가하기 -->
+   <insert id="userInsert"
+      parameterType="com.koreait.hotelfive.dto.MemberDTO">
+      INSERT INTO MEMBER (MNO, MID, MPW, MNAME, MBIRTH, MPHONE, MEMAIL, MADDR1, MADDR2, MZIPCODE, MREGDATE, MGRADE, MPOINT, MISWITHDRAWAL, MRIGHT) VALUES (NEXTVAL(MEMBER_SEQ), #{mId}, #{mPw}, #{mName}, #{mBirth}, #{mPhone}, #{mEmail}, #{mAddr1}, #{mAddr2}, #{mZipcode}, CURRENT_TIMESTAMP() , 0, 0, 0, 0)
+   </insert>
+
+   <!-- 관리자가 회원 탈퇴시키기 1: 탈퇴 0: 유지 -->
+   <update id="userLeave">
+      UPDATE MEMBER SET MISWITHDRAWAL = 1 WHERE MID = #{mId}
+   </update>
+
+   <!-- 관리자 권한(1) 부여하기 -->
+   <update id="changeAdmin">
+      UPDATE MEMBER SET MRIGHT = 1 WHERE MID = #{mId}
+   </update>
+   <!-- 일반회원 권한(0) 부여하기 -->
+   <update id="changeUser">
+      UPDATE MEMBER SET MRIGHT = 0 WHERE MID = #{mId}
+   </update>
+
+   <!-- 회원검색하기 -->
+   <select id="queryAdminList" parameterType="Map"
+      resultType="com.koreait.hotelfive.dto.MemberDTO"><!-- 정렬된 테이블을 A라 부르고 ROWNUM을 쓸수 있게 부착, -->
+      SELECT * FROM (SELECT ROWNUM RN, A.* FROM (SELECT * FROM MEMBER
+      <if test="column=='MNAME'">WHERE MNAME LIKE '%' || #{query} || '%'</if>
+      <if test="column=='MID'">WHERE MID LIKE '%' || #{query} || '%'</if>
+      <if test="column=='MADDR1'">WHERE MADDR1 LIKE '%' || #{query} || '%'</if>
+      ORDER BY MNO DESC) A)
+      WHERE RN BETWEEN #{beginRecord} AND #{endRecord}
+   </select>
+   
+   <!-- // 검색된 게시글 개수 구하기 -->
+   <select id="getQueryRecord" parameterType="Map" resultType="int">
+      SELECT COUNT(*) FROM MEMBER
+      <if test="column=='MNAME'">WHERE MNAME LIKE '%' || #{query} || '%'</if>
+      <if test="column=='MID'">WHERE MID LIKE '%' || #{query} || '%'</if>
+      <if test="column=='MADDR1'">WHERE MADDR1 LIKE '%' || #{query} || '%'</if>
+
+   </select>
+
+
+   <select id="queryAdminList2" parameterType="Map"
+      resultType="com.koreait.hotelfive.dto.MemberDTO"><!-- 정렬된 테이블을 A라 부르고 ROWNUM을 쓸수 있게 부착, -->
+      SELECT * FROM (SELECT ROWNUM RN, A.* FROM (SELECT * FROM MEMBER
+      <if test="column=='MNAME'">WHERE MNAME LIKE '%' || #{query} || '%'</if>
+      <if test="column=='MID'">WHERE MID LIKE '%' || #{query} || '%'</if>
+      <if test="column=='MADDR1'">WHERE MADDR1 LIKE '%' || #{query} || '%'</if>
+      <if test="column=='CHOOSE'">WHERE MNAME LIKE '%' || #{query} || '%' OR MID LIKE '%' ||
+         #{query} || '%' OR MADDR1 LIKE '%' || #{query} || '%'</if>
+      ORDER BY MNO DESC) A) WHERE RN BETWEEN #{beginRecord} AND #{endRecord}
+   </select>
+   
+   <!-- 검색된 레코드만 보여주기. -->
+   <select id="getQueryRecord2" resultType="int">
+      SELECT COUNT(*) FROM MEMBER
+      <if test="column=='MNAME'">WHERE MNAME LIKE '%' || #{query} || '%'</if>
+      <if test="column=='MID'">WHERE MID LIKE '%' || #{query} || '%'</if>
+      <if test="column=='MADDR1'">WHERE MADDR1 LIKE '%' || #{query} || '%'</if>
+      <if test="column=='CHOOSE'">WHERE MNAME LIKE '%' || #{query} || '%' OR MID LIKE '%' ||
+         #{query} || '%' OR MADDR1 LIKE '%' || #{query} || '%'</if>
+   </select>
+
+   <select id="countReservation" resultType="int">
+      SELECT COUNT(*) FROM RESERVATION
+   </select>
+
+   <!-- 전체 예약현황_리스트 -->
+   <select id="reservationList" parameterType="Map"
+      resultType="com.koreait.hotelfive.dto.ReservationViewDTO">
+      SELECT * FROM (SELECT ROWNUM AS RN, A.* FROM ((SELECT M.MID, R.RNO, M.MNAME, G.GNAME, R.RCHECKIN, R.RCHECKOUT, R.RPEOPLE, R.RAPPROVAL FROM MEMBER M, GUESTROOM G, RESERVATION R WHERE M.MNO = R.MNO AND R.GNO = G.GNO UNION ALL WHERE M.MNO = R.MNO AND R.GNO = G.GNO UNION ALL SELECT N.NMID, R.RNO, N.NMNAME, G.GNAME, R.RCHECKIN, R.RCHECKOUT, R.RPEOPLE, R.RAPPROVAL FROM NONMEMBER N, GUESTROOM G, RESERVATION R WHERE N.NMID = R.NMID AND R.GNO = G.GNO) WHERE N.NMID = R.NMID AND R.GNO = G.GNO) ORDER BY RNO DESC) A) WHERE RN BETWEEN #{beginRecord} AND #{endRecord}
+   </select>
+
+
+   <select id="getTotalReservationCount" resultType="int">
+      SELECT COUNT(*) FROM RESERVATION
+   </select>
+   <!-- ****************************************************************************************************************************************************************** -->
+   <!-- 전체 예약현황 - 검색하기 -->
+   <select id="queryAdminReservationList" parameterType="Map"
+      resultType="com.koreait.hotelfive.dto.ReservationViewDTO"><!-- 정렬된 테이블을 A라 부르고 ROWNUM을 쓸수 있게 부착, -->
+      SELECT * FROM (SELECT ROWNUM RN, A.* FROM ( (SELECT M.MID, R.RNO, M.MNAME, G.GNAME, R.RCHECKIN, R.RCHECKOUT, R.RPEOPLE, R.RAPPROVAL FROM MEMBER M, GUESTROOM G, RESERVATION R WHERE M.MNO = R.MNO AND R.GNO = G.GNO
+      <if test="column=='MID'">AND M.MID LIKE '%' || #{query} || '%'</if>
+      <if test="column=='MNAME'">AND M.MNAME LIKE '%' || #{query} || '%'</if>
+      <if test="column=='GNAME'">AND G.GNAME LIKE '%' || #{query} || '%'</if>
+      ORDER BY R.RNO DESC) A))
+      WHERE RN BETWEEN #{beginRecord} AND #{endRecord}
+   </select>
+   
+   <!-- 전체 예약현황 - 검색된 예약 총 갯수 -->
+   <select id="getQueryReservationRecord" parameterType="Map"
+      resultType="int">
+      SELECT COUNT(*) FROM RESERVATION R, GUESTROOM G, MEMBER M WHERE M.MNO = R.MNO AND R.GNO = G.GNO
+      <if test="column=='MID'">AND M.MID LIKE '%' || #{query} || '%'</if>
+      <if test="column=='MNAME'">AND M.MNAME LIKE '%' || #{query} || '%'</if>
+      <if test="column=='GNAME'">AND G.GNAME LIKE '%' || #{query} || '%'</if>
+   </select>
+   <!-- ****************************************************************************************************************************************************************** -->
+
+   <!-- 전체 예약현황_예약승인하기 -->
+   <update id="adminReservationOK" parameterType="int">
+      UPDATE RESERVATION SET RAPPROVAL = 1 WHERE RNO = #{rNo}
+   </update>
+
+   <!-- 전체 예약현황_미승인된 예약취소하기 -->
+   <delete id="adminReservationCancel" parameterType="int">
+      DELETE FROM RESERVATION WHERE RNO = #{rNo}
+   </delete>
+   <!-- 전체 예약현황_승인된 예약 삭제하기 -->
+   <delete id="adminReservationDelete" parameterType="int">
+      DELETE FROM RESERVATION WHERE RNO = #{rNo}
+   </delete>
+</mapper>

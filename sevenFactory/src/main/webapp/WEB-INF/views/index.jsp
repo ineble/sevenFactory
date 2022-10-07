@@ -109,7 +109,7 @@
 <jsp:include page="/WEB-INF/views/template/header.jsp" />
 
 <video autoplay muted loop id="myVideo">
-  <source src="resources/Sea.mp4" type="video/mp4">
+  <source src="resources/dog.mp4" type="video/mp4">
 </video>
 
 

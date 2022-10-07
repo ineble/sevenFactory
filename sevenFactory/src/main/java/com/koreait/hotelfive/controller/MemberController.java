@@ -1,6 +1,5 @@
 package com.koreait.hotelfive.controller;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,9 +47,9 @@ public class MemberController {
 	@Autowired
 	private SqlSession sqlSession;
 	@Autowired
-	private JavaMailSender mailSender;  // root-context.xml 의 빈 자동 생성
+	private JavaMailSender mailSender;  
 	private Command command;
-	//jsp 넣은거 시작
+	
 	@RequestMapping("registerPage2")
 	public String goRegisterPage() {
 		return "login2/registerPage2";
@@ -60,14 +59,15 @@ public class MemberController {
 		return "login2/modmemberinfo";
 	}
 	
-	//jsp 넣은거 끝
+	
 	
 	@RequestMapping("registerPage")
 	public String goRegisterPage1() {
 		System.out.println("goRegisterPage1");
 		return "login/registerPage22";
 	}
-
+	
+	
 	
 	@RequestMapping("findIdPage")
 	public String goFindIdPage() {
@@ -84,10 +84,15 @@ public class MemberController {
 	
 	@RequestMapping("logout")
 	public String doLogout(HttpServletRequest request) {
-		
+		System.out.println("안녕1");
 		HttpSession session = request.getSession();
+		System.out.println("안녕2");
+		session.setMaxInactiveInterval(5);
+		System.out.println("session : " + session);
+		System.out.println("안녕3");
 		session.invalidate();
-		
+		System.out.println("안녕4");
+		System.out.println("session : " + session);
 		return "redirect:main";
 	}
 	
@@ -104,7 +109,7 @@ public class MemberController {
 	}
 	
 	
-	//AJAX 통신 
+	//AJAX 
 	@RequestMapping(value="login",method=RequestMethod.POST)
 	@ResponseBody 
 	public String doLogin( HttpServletRequest request) {
@@ -290,21 +295,21 @@ public class MemberController {
 		  return obj.toJSONString();
 	}
 	
-			// 이병한 
-			// 1. 마이페이지 - 메인
+			// �씠蹂묓븳 
+			// 1. 留덉씠�럹�씠吏� - 硫붿씤
 			@RequestMapping("goMyPage")
 			public String goMyPage() {
 				
 				return "myPage/myPageMain";
 			}
 			
-			// 2. 마이페이지 - 회원정보 수정 전 비밀번호 확인 페이지 이동
+			// 2. 留덉씠�럹�씠吏� - �쉶�썝�젙蹂� �닔�젙 �쟾 鍮꾨�踰덊샇 �솗�씤 �럹�씠吏� �씠�룞
 			@RequestMapping("myPage_pw_confirmPage")
 			public String goMyPagePwConfirmPage() {
 				return "myPage/myPagePwConfirmPage";
 			}
 	//***********************************************************************************************	
-			// 3. 마이페이지-회원정보페이지 이동
+			// 3. 留덉씠�럹�씠吏�-�쉶�썝�젙蹂댄럹�씠吏� �씠�룞
 			@RequestMapping("myUpdatePage")
 			public String goMemberInfoPage(HttpServletRequest request, Model model) {
 				model.addAttribute("request", request);
@@ -313,7 +318,7 @@ public class MemberController {
 				return "myPage/myUpdatePage";
 			}
 			
-			// 4. 마이페이지 - 회원정보 업데이트
+			// 4. 留덉씠�럹�씠吏� - �쉶�썝�젙蹂� �뾽�뜲�씠�듃
 			@RequestMapping(value="myUpdate", method=RequestMethod.POST)
 			public String myPageUpdate(HttpServletRequest request, Model model) {
 				
@@ -326,7 +331,7 @@ public class MemberController {
 			
 		//****************************************************************************************************	
 			
-		     // 5. 마이페이지-본인Q&A 게시판-LIST
+		     // 5. 留덉씠�럹�씠吏�-蹂몄씤Q&A 寃뚯떆�뙋-LIST
 	         @RequestMapping("myBoardView")
 	         public String goMyReviewBoard(HttpServletRequest request, Model model) {
 	            model.addAttribute("request", request);
@@ -337,22 +342,22 @@ public class MemberController {
 	         
 			
 			
-			// Email 검사
+			// Email 寃��궗
 			@SuppressWarnings("unchecked")
 			@RequestMapping(value="EmailCheck",method=RequestMethod.POST)
 			public String emailCheck(HttpServletRequest request, HttpServletResponse response) {
-				// 1. 전달되는 파라미터 저장
+				// 1. �쟾�떖�릺�뒗 �뙆�씪誘명꽣 ���옣
 				String mEmail = request.getParameter("mEmail");
 				
-				// 2. mEmail 를 가진 회원 정보 확인
+				// 2. mEmail 瑜� 媛�吏� �쉶�썝 �젙蹂� �솗�씤
 				HotelFiveDAO hDAO = sqlSession.getMapper(HotelFiveDAO.class);
 				MemberDTO mDTO = hDAO.selectBymEmail(mEmail);
 				
-				// 3. 응답할 JSONObject 객체 생성
+				// 3. �쓳�떟�븷 JSONObject 媛앹껜 �깮�꽦
 				JSONObject obj = new JSONObject();
 				
-				// 4. mId 를 가진 회원이 있으면 obj 에 result 변수에 "EXIST" 저장
-				//    mId 를 가진 회원이 없으면 obj 에 result 변수에 "" 저장
+				// 4. mId 瑜� 媛�吏� �쉶�썝�씠 �엳�쑝硫� obj �뿉 result 蹂��닔�뿉 "EXIST" ���옣
+				//    mId 瑜� 媛�吏� �쉶�썝�씠 �뾾�쑝硫� obj �뿉 result 蹂��닔�뿉 "" ���옣
 				if ( mDTO != null ) {
 					obj.put("result", "EXIST");
 				} else {
@@ -362,7 +367,7 @@ public class MemberController {
 				return obj.toJSONString();
 			}
 			
-			// 탈퇴페이지 이동
+			// �깉�눜�럹�씠吏� �씠�룞
 			@RequestMapping("myLeavePage")
 			public String myPageLeavePage(@RequestParam("mId") String mId, Model model) {
 				
@@ -370,27 +375,27 @@ public class MemberController {
 				
 				return "myPage/myLeavePage";
 			}
-			// 실제 회원탈퇴
+			// �떎�젣 �쉶�썝�깉�눜
 			@RequestMapping(value="myLeave")
 			public String myPageLeave(HttpServletRequest request, Model model) {
 				
 				model.addAttribute("request", request);
 				command = new MyLeaveCommand();
 				command.execute(sqlSession, model);
-				/*// 1. 전달 받은 파라미터 저장
+				/*// 1. �쟾�떖 諛쏆� �뙆�씪誘명꽣 ���옣
 				String mId = request.getParameter("mId");
 								
-				// 2. mId 회원 삭제
+				// 2. mId �쉶�썝 �궘�젣
 				HotelFiveDAO hDAO = sqlSession.getMapper(HotelFiveDAO.class);
 				int result = hDAO.leaveMember(mId);
 								
-				// 3. 결과를 저장할 JSONObject 생성
+				// 3. 寃곌낵瑜� ���옣�븷 JSONObject �깮�꽦
 				JSONObject obj = new JSONObject();
 								
-				// 4. JSONObject 에 결과 result 저장
+				// 4. JSONObject �뿉 寃곌낵 result ���옣
 				if (result > 0) {
 					obj.put("result", "SUCCESS");
-					request.getSession().invalidate();  // 세션 초기화
+					request.getSession().invalidate();  // �꽭�뀡 珥덇린�솕
 				} else {
 					obj.put("result", "FAIL");
 				}*/
@@ -398,8 +403,8 @@ public class MemberController {
 			}
 		//**********************************************************************************************************************************
 			
-			// 이병한
-			// 관리자 페이지 - MAIN 허브(연결통로)
+			// �씠蹂묓븳
+			// 愿�由ъ옄 �럹�씠吏� - MAIN �뿀釉�(�뿰寃고넻濡�)
 			@RequestMapping("adminMain")
 			public String goAdminMain() {
 				
@@ -407,7 +412,7 @@ public class MemberController {
 			}
 			
 			
-			// 관리자 페이지 - VIEW
+			// 愿�由ъ옄 �럹�씠吏� - VIEW
 			@RequestMapping("adminViewPage")
 			public String goAdminView(HttpServletRequest request, Model model) {
 				
@@ -418,7 +423,7 @@ public class MemberController {
 				return "admin/adminViewPage";
 			}
 			
-			// 관리자 페이지 - 회원추가하기
+			// 愿�由ъ옄 �럹�씠吏� - �쉶�썝異붽��븯湲�
 			@RequestMapping("adminInsertPage")
 			public String goAdminInsertPage() {
 				return "admin/adminInsertPage";
@@ -433,7 +438,7 @@ public class MemberController {
 				return "redirect:adminList";
 			}
 			
-			// 관리자페이지 - LEAVE(탈퇴시키기)
+			// 愿�由ъ옄�럹�씠吏� - LEAVE(�깉�눜�떆�궎湲�)
 			@RequestMapping("adminLeave")
 			public String adminLeave(HttpServletRequest request, Model model) {
 				
@@ -444,7 +449,7 @@ public class MemberController {
 				return "redirect:adminList";
 			}
 			
-			// 관리자페이지 - 일반회원에서 관리자 권한 부여하기
+			// 愿�由ъ옄�럹�씠吏� - �씪諛섑쉶�썝�뿉�꽌 愿�由ъ옄 沅뚰븳 遺��뿬�븯湲�
 			@RequestMapping("adminMaking")
 			public String adminMaking(HttpServletRequest request, Model model) {
 				
@@ -454,7 +459,7 @@ public class MemberController {
 				
 				return "redirect:adminList";
 			}
-			// 관리자페이지 - 관리자에서 일반회원으로 변경하기
+			// 愿�由ъ옄�럹�씠吏� - 愿�由ъ옄�뿉�꽌 �씪諛섑쉶�썝�쑝濡� 蹂�寃쏀븯湲�
 			@RequestMapping("userMaking")
 			public String userMaking(HttpServletRequest request, Model model) {
 				
@@ -464,7 +469,7 @@ public class MemberController {
 				
 				return "redirect:adminList";
 			}
-			// 관리자 페이지 - 회원관리 LIST
+			// 愿�由ъ옄 �럹�씠吏� - �쉶�썝愿�由� LIST
 			@RequestMapping("adminList")
 			public String goAdminlist(HttpServletRequest request, Model model) {
 				
@@ -475,7 +480,7 @@ public class MemberController {
 				return "admin/adminListPage";
 			}
 			
-			// 관리자페이지 - 회원검색
+			// 愿�由ъ옄�럹�씠吏� - �쉶�썝寃��깋
 			@RequestMapping("queryAdminListPage")
 			public String queryAdminListPage(HttpServletRequest request, Model model) {
 				
@@ -486,7 +491,7 @@ public class MemberController {
 				return "admin/adminListPage";
 			}
 			
-			// 관리자 페이지 - 객실예약 현황 - LIST
+			// 愿�由ъ옄 �럹�씠吏� - 媛앹떎�삁�빟 �쁽�솴 - LIST
 			@RequestMapping("adminReservationList")
 			public String goAdminReservation(HttpServletRequest request, Model model) {
 				
@@ -496,7 +501,7 @@ public class MemberController {
 				
 				return "admin/adminReservationListPage";
 			}
-			// 관리자페이지 - 객실예약 현황 회원 검색
+			// 愿�由ъ옄�럹�씠吏� - 媛앹떎�삁�빟 �쁽�솴 �쉶�썝 寃��깋
 			@RequestMapping("queryAdminReservationPage")
 			public String queryAdminReservationPage(HttpServletRequest request, Model model) {
 				
@@ -507,7 +512,7 @@ public class MemberController {
 				return "admin/adminReservationListPage";
 			}
 					
-			// 관리자 페이지 - 객실예약 현황 - 예약 승인하기
+			// 愿�由ъ옄 �럹�씠吏� - 媛앹떎�삁�빟 �쁽�솴 - �삁�빟 �듅�씤�븯湲�
 			@RequestMapping(value="ReservationOk", method=RequestMethod.POST)
 			public String ReservationOk(HttpServletRequest request, Model model) {
 						
@@ -516,7 +521,7 @@ public class MemberController {
 				command.execute(sqlSession, model);
 				return "redirect:adminReservationList?rNo=" + request.getParameter("rNo");
 			}
-			// 관리자 페이지 - 객실예약 현황 - 예약 취소하기
+			// 愿�由ъ옄 �럹�씠吏� - 媛앹떎�삁�빟 �쁽�솴 - �삁�빟 痍⑥냼�븯湲�
 			@RequestMapping(value="ReservationCancel", method=RequestMethod.POST)
 			public String ReservationCancel(HttpServletRequest request, Model model) {
 							
@@ -525,7 +530,7 @@ public class MemberController {
 				command.execute(sqlSession, model);
 				return "redirect:adminReservationList";
 			}
-			// 관리자 페이지 - 객실예약 현황 - 예약 취소하기
+			// 愿�由ъ옄 �럹�씠吏� - 媛앹떎�삁�빟 �쁽�솴 - �삁�빟 痍⑥냼�븯湲�
 			@RequestMapping(value="ReservationDelete", method=RequestMethod.POST)
 			public String ReservationDelete(HttpServletRequest request, Model model) {
 									

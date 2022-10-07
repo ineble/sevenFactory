@@ -5,13 +5,13 @@ import java.sql.Date;
 public class MemberDTO {
 
 	private int mNo, mGrade, mPoint, mIsWithDrawal, mRight, mZipcode;
-	private String mId, mPw, mName, mPhone, mAddr1, mAddr2,  mEmail;
+	private String mId, mPw, mName, mPhone, mAddr1, mAddr2,  mEmail, mBirth;
 	private Date mRegDate;
 	
 	public MemberDTO() {	}
 
 	public MemberDTO(int mNo, int mGrade, int mPoint, int mIsWithDrawal, int mRight, int mZipcode, String mId,
-			String mPw, String mName, String mPhone, String mAddr1, String mAddr2, String mEmail, Date mRegDate) {
+			String mPw, String mName, String mPhone, String mAddr1, String mAddr2, String mEmail, String mBirth, Date mRegDate) {
 		super();
 		this.mNo = mNo;
 		this.mGrade = mGrade;
@@ -22,6 +22,7 @@ public class MemberDTO {
 		this.mId = mId;
 		this.mPw = mPw;
 		this.mName = mName;
+		this.mBirth = mBirth;
 		this.mPhone = mPhone;
 		this.mAddr1 = mAddr1;
 		this.mAddr2 = mAddr2;
@@ -141,6 +142,16 @@ public class MemberDTO {
 		this.mRegDate = mRegDate;
 	}
 
+	public String getmBirth() {
+		return mBirth;
+	}
+
+	public void setmBirth(String mBirth) {
+		this.mBirth = mBirth;
+	}
+
+	
+	
 	
 	
 }

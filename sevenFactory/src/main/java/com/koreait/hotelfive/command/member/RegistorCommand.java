@@ -19,7 +19,7 @@ public class RegistorCommand implements Command {
 		Map<String, Object> map = model.asMap();
 		HttpServletRequest request = (HttpServletRequest) map.get("request");
 	
-		  MemberDTO mDTO = new MemberDTO();
+		MemberDTO mDTO = new MemberDTO();
 		System.out.println(request.getParameter("mAddr2")); 
 		mDTO.setmId(request.getParameter("mId"));
 		mDTO.setmPw(request.getParameter("mPw"));
@@ -30,15 +30,6 @@ public class RegistorCommand implements Command {
 		mDTO.setmAddr2(request.getParameter("mAddr2"));
 		mDTO.setmZipcode(Integer.parseInt(request.getParameter("mZipcode")));
 		
-		
-		/*
-		String mId = request.getParameter("mId");
-		String mPw = request.getParameter("mPw");
-		String mName = request.getParameter("mName");
-		String mEmail = request.getParameter("mEmail");
-		String mPhone = request.getParameter("mPhone");
-		String mAddr = request.getParameter("mAddr");
-		*/
 		HotelFiveDAO hDAO = sqlSession.getMapper(HotelFiveDAO.class);
 		hDAO.registor(mDTO);
 		
