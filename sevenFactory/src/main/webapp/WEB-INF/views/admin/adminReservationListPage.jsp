@@ -84,89 +84,29 @@
 <script type="text/javascript">
    // 예약 승인하기
    function fn_ReservationOk(f){
-	  if( confirm('예약을 승인하시겠습니까?') ){
-		  alert('예약이 승인되었습니다');
-		  f.action = 'ReservationOk';
+     if( confirm('예약을 승인하시겠습니까?') ){
+        alert('예약이 승인되었습니다');
+        f.action = 'ReservationOk';
           f.submit();
-	  }
-      /* swal({
-           title: "예약을 승인하시겠습니까?",
-           text: "",
-           icon: "warning",
-           buttons: true,
-           dangerMode: true,
-         })
-         .then((willDelete) => {
-           if (willDelete) {
-             swal("승인되었습니다", {
-               icon: "success",
-             });
-             setTimeout(function(){
-               f.action = 'ReservationOk';
-               f.submit();
-             }, 1000);
-           } else {
-             swal("취소하였습니다");
-           }
-      }); */
+     }
    }
    
    // 예약 취소하기
    function fn_ReservationCancel(f){
-	  if( confirm('정말로 고객의 예약을 취소하시겠습니까?') ){
-			  alert('예약이 취소되었습니다');
-			  f.action = 'ReservationCancel';
+     if( confirm('정말로 고객의 예약을 취소하시겠습니까?') ){
+           alert('예약이 취소되었습니다');
+           f.action = 'ReservationCancel';
               f.submit();
-		}
-     /*  swal({
-           title: "정말로 고객의 예약을 취소하시겠습니까?",
-           text: "",
-           icon: "warning",
-           buttons: true,
-           dangerMode: true,
-         })
-         .then((willDelete) => {
-           if (willDelete) {
-             swal("예약이 취소되었습니다", {
-               icon: "success",
-             });
-             setTimeout(function(){
-                f.action = 'ReservationCancel';
-               f.submit();
-             }, 1000);
-           } else {
-             swal("취소하였습니다");
-           }
-      }); */
+      }
    }
    
    // 승인된 예약 취소하여 삭제하기
    function fn_ReservationDelete(f){
-	   if( confirm('승인이 확정된 예약을 취소하시겠습니까?') ){
-			  alert('승인 확정된 예약이 취소되었습니다.');
-			  f.action = 'ReservationDelete';
+      if( confirm('승인이 확정된 예약을 취소하시겠습니까?') ){
+           alert('승인 확정된 예약이 취소되었습니다.');
+           f.action = 'ReservationDelete';
               f.submit();
-		}
-      /* swal({
-           title: "승인이 확정된 예약을 취소하시겠습니까?",
-           text: "",
-           icon: "warning",
-           buttons: true,
-           dangerMode: true,
-         })
-         .then((willDelete) => {
-           if (willDelete) {
-             swal("승인 확정된 예약이 취소되었습니다.", {
-               icon: "success",
-             });
-             setTimeout(function(){
-                f.action = 'ReservationDelete';
-               f.submit();
-             }, 1000);
-           } else {
-             swal("취소하였습니다");
-           }
-         }); */
+      }
    }
    // 예약 현황 검색하기
    function fn_queryAdminReservationList(f){
@@ -178,7 +118,7 @@
          return;
       }
       if(f.column.value == 'EMPTY' && f.query.value != ''){
-    	  alert('검색할 카테고리를 지정해주세요');
+         alert('검색할 카테고리를 지정해주세요');
          //swal("검색할 카테고리를 지정해주세요","", 'error');
          f.column.focus();
          return;
@@ -280,32 +220,5 @@
          </c:if>
       </div>
 </div>
-
 <br><br><br><br>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <%@ include file="/WEB-INF/views/template/footer.jsp" %>

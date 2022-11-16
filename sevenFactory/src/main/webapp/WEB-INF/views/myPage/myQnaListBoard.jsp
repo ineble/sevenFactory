@@ -42,7 +42,7 @@
 		padding-top: 300px;	
 	}
 	#pagetitle {font-size: 85px;}
-	#hotelfive, #explain {font-weight: bold;}
+	#sevenfactory, #explain {font-weight: bold;}
 	#explain {font-size: 15px;}
 	
 	.tab_wrap{
@@ -109,6 +109,7 @@
 </script>
 
 <div class="qnaBoard-Listbox">
+<br><br><br>
 	<h1 style="color: #CAC2D1;">QNA</h1>
 						
 	<table>
@@ -155,8 +156,7 @@
 		<tfoot>
 			<tr>
 				<td colspan="4">
-					${pageView }
-					<input type="button" value="글쓰기" onclick="location.href='qnaBoardInsertPage'"/>				
+					${pageView }				
 				</td>
 			</tr>
 		</tfoot>

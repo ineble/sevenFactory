@@ -118,6 +118,7 @@
 
 <div class="leave-box">
 	<form id="f" action="POST">
+	<br><br><br><br><br>
 		<h3 class="centered">Together 회원탈퇴안내</h3>
 		<div class="centered">
 			<span>그동안 저희 Together를 이용해 주셔서 진심으로 감사드립니다.</span><br/>

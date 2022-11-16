@@ -16,7 +16,7 @@
 			padding-top: 300px;
 	}
 		#pagetitle {font-size: 85px;}
-		#hotelfive, #explain {font-weight: bold;}
+		#sevenfactory, #explain {font-weight: bold;}
 		#explain {font-size: 15px;}
 
    .nonMemberResrevationBox{
@@ -58,15 +58,7 @@
 </script>
 <!-- 동적인 페이지 포함 -->
 <jsp:include page="/WEB-INF/views/template/header.jsp" />
-   
-   		<div class="bookableList_backimg">
-		<h3 id="hotelfive">Hotel Five</h3>
-		<h1 id="pagetitle">Reservation check</h1>
-		<p id="explain">좋은 시간을 보낼 호텔파이브 비회원 예약조회</p>
-		</div>
- 
-   
-   
+<br><br><br><br><br><br><br><br><br>
    <div class="nonMemberResrevationBox">
       <h2>${nmName } 님 예약내역</h2>
       <table>
@@ -82,7 +74,7 @@
             <c:if test="${empty list }">
                <tr>
                   <td colspan="4">
-                     예약이 없습니다.
+                     예약이 없습니다.( 전화번호를 확인해주세요. )
                   </td>
                </tr>
             </c:if>

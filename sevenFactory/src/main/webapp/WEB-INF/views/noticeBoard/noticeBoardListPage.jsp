@@ -82,7 +82,7 @@ a {
             <c:forEach var="nDTO" items="${list }">
                <tr>
                   <c:if test="${nDTO.nIsDelete eq 0 }">
-                     <td>${nDTO.nNo }</td>
+                  	 <td>${nDTO.nNo }</td>
                      <td><a href="noticeBoardViewPage?nNo=${nDTO.nNo}&page=${page}" >${nDTO.nTitle }</a></td>
                      <td>${nDTO.mId }</td>
                      <td>${nDTO.nNoticeDate }</td>

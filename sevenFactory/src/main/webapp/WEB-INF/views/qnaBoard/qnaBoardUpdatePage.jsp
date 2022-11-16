@@ -91,7 +91,7 @@
 	}
 	
 	.notice_backimg #pagetitle {font-size: 85px;}
-	.notice_backimg #hotelfive, #explain {font-weight: bold;}
+	.notice_backimg #sevenfactory, #explain {font-weight: bold;}
 	.notice_backimg #explain {font-size: 15px;}
 	#notice_name {width: 200px;}
 </style>
@@ -139,9 +139,9 @@
    
 </script>
 <div class="notice_backimg">
-	<h3 id="hotelfive">Hotel Five</h3>
+	<h3 id="sevenfactory">Together</h3>
 	<h1 id="pagetitle">Community</h1>
-	<p id="explain">호텔파이브의 각종 이벤트 및 소식</p>
+	<p id="explain">투개더의 각종 이벤트 및 소식</p>
 </div>
 <div class="qnaBoard-viewBox">
 	<img id="notice_name" alt="notice_name" src="resources/assets/name_img/update_name.png"/><br/> 

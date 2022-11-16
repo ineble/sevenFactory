@@ -3,7 +3,10 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script>
+history.replaceState({}, null, location.pathname);
+</script>
 <!-- 동적인 페이지 포함 -->
 <jsp:include page="/WEB-INF/views/template/header.jsp" />
 <style type="text/css">
@@ -51,16 +54,16 @@
 			padding-top: 300px;
 	}
 		#pagetitle {font-size: 85px;}
-		#hotelfive, #explain {font-weight: bold;}
+		#sevenfactory, #explain {font-weight: bold;}
 		#explain {font-size: 15px;}
    
 </style>
 <div class="findReservationBox">
  	
  		<div class="bookableList_backimg">
-		<h3 id="hotelfive">Hotel Five</h3>
+		<h3 id="sevenfactory">Together</h3>
 		<h1 id="pagetitle">Reservation check</h1>
-		<p id="explain">좋은 시간을 보낼 호텔파이브 비회원 예약조회</p>
+		<p id="explain">투개더 비회원 예약조회</p>
 		</div>
  
  

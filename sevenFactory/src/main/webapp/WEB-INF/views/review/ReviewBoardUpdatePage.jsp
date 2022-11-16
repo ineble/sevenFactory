@@ -30,7 +30,7 @@
 	}
 	
 	.notice_backimg #pagetitle {font-size: 85px;}
-	.notice_backimg #hotelfive, #explain {font-weight: bold;}
+	.notice_backimg #sevenfactory, #explain {font-weight: bold;}
 	.notice_backimg #explain {font-size: 15px;}
 	#notice_name {width: 200px;}
 	
@@ -84,6 +84,7 @@
 	function fn_boardListPage() {
 		history.back();
 	}
+	
 	function fn_updateBoard(f) {
 		if (f.rTitle.value == '') {
 			alert('제목을 입력하세요.');
@@ -103,11 +104,12 @@
 		f.action = 'ReviewBoardUpdate';
 		f.submit();
 	}
+	
 </script>
 <div class="notice_backimg">
-	<h3 id="hotelfive">Hotel Five</h3>
+	<h3 id="sevenfactory">Together</h3>
 	<h1 id="pagetitle">Community</h1>
-	<p id="explain">호텔파이브의 각종 이벤트 및 소식</p>
+	<p id="explain">투개더의 각종 이벤트 및 소식</p>
 </div>
 <div class="board-insert-box">
 	<img id="notice_name" alt="notice_name" src="resources/assets/name_img/update_name.png"/><br/> 
@@ -125,22 +127,8 @@
 				<tr>
 					<td>방 번호</td>
 					<td>
-					<select name="gName" id="rooms">
-						<option value="">::방번호::</option>
-					    <optgroup label="A동">
-					      <option value="A101">A101</option>
-					      <option value="A102">A102</option>
-					    </optgroup>
-					    <optgroup label="B동">
-					      <option value="B201">B201</option>
-					      <option value="B202">B202</option>
-					    </optgroup>
-					    <optgroup label="C동">
-					      <option value="C301">C301</option>
-					    </optgroup>
-					  </select>
-					  <br/>
-					  기존 방 : ${hDTO.gName }
+					  
+					  방 이름 : ${hDTO.gName }
 					 </td>
 				</tr>
 			</table>

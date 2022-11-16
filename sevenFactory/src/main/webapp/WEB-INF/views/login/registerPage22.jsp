@@ -185,19 +185,38 @@ request.setCharacterEncoding("utf-8");
 		});
 		
 		// 4. 전화번호(핸드폰)
-		var regExpPHONE = /^01[0|1|6|9]-[0-9]{3,4}-[0-9]{4}$/;
-		
-		$('#mPhone').keyup(function(){
-			if ( regExpPHONE.test($('#mPhone').val()) ) {
-				$('#phoneCheckResult').text('사용 가능한 번호입니다.');
-				$('#phoneCheckResult').css('color', 'blue').css('font-weight', 'bold');
-				phoneFlag = true;
-			} else {
-				$('#phoneCheckResult').text('사용 불가능한 번호입니다.');
-				$('#phoneCheckResult').css('color', 'red');
-				phoneFlag = false;
-			}
-		});
+	      var regExpPHONE = /^01[0|1|6|9][0-9]{3,4}[0-9]{4}$/;
+	      
+	      $('#mPhone').keyup(function(){
+	         $.ajax({
+	            url: 'phoneCheck',
+	            type: 'POST',
+	            dataType: 'JSON',
+	            data: 'mPhone=' + $('#mPhone').val(),
+	            success: function( responseObject ) {
+	               // 정규식 test()
+	               if ( regExpPHONE.test($('#mPhone').val()) ) {  // 정규식을 만족하면,
+	                  // 가입된 아이디인지 여부 확인
+	                  if ( responseObject.result == 'NO' ) {
+	                     $('#phoneCheckResult').text('이미 가입된 전화번호입니다.');
+	                     $('#phoneCheckResult').css('color', 'red');
+	                     phoneFlag = false;
+	                  } else {
+	                     $('#phoneCheckResult').text('사용할 수 있는 전화번호입니다.');
+	                     $('#phoneCheckResult').css('color', 'blue').css('font-weight', 'bold');
+	                     phoneFlag = true;
+	                  }
+	               } else {  // 정규식을 만족하지 않으면
+	                  $('#phoneCheckResult').text('11자 사이의 숫자입니다.');
+	                  $('#phoneCheckResult').css('color', 'red');
+	                  phoneFlag = false;
+	               }
+	            },
+	            error: function() {
+	               alert('AJAX 통신이 실패했습니다.');
+	            }
+	         });
+	      });
 		
 		// 5. 회원가입
 		$('#signUpBtn').click(function(){
@@ -218,8 +237,6 @@ request.setCharacterEncoding("utf-8");
 					alert('이메일 인증 번호를 확인하세요.');
 				}
 			}else {
-					
-				
 					if( !idFlag ){
 						alert('아이디를 입력해주세요.');
 						$("#mId").focus();
@@ -248,10 +265,8 @@ request.setCharacterEncoding("utf-8");
 					} else if ( !addrFlag) {
 						alert('주소를 입력해주세요.');
 						$("#mAddr1").focus();
-					}			
+				}			
 			}
-			
-		
 		});
 		
 		// 6. 입력 초기화
@@ -788,7 +803,7 @@ request.setCharacterEncoding("utf-8");
 						<tr>
 							<td>전화번호</td>
 							<td>
-								<input id="mPhone" type="text" name="mPhone" placeholder="하이픈입력 ex)010-0000-0000" /><br/>
+								<input id="mPhone" type="text" name="mPhone" placeholder="ex)01000000000" /><br/>
 								<span id="phoneCheckResult"></span>
 							</td>
 						</tr>

@@ -67,7 +67,7 @@
 </div>
 <h5 class="w3-center w3-padding-48"><span class="w3-tag w3-wide">WHERE TO FIND US</span></h5>
 
-<div id="map" style="width:500px;height:400px;"></div>
+
 
 
 <script>

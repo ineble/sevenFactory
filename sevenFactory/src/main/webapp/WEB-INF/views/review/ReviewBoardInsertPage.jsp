@@ -28,7 +28,7 @@
 		padding-top: 300px;
 	}
 	.notice_backimg #pagetitle {font-size: 85px;}
-	.notice_backimg #hotelfive, #explain {font-weight: bold;}
+	.notice_backimg #sevenfactory, #explain {font-weight: bold;}
 	.notice_backimg #explain {font-size: 15px;}
 	/* star */
 
@@ -102,13 +102,13 @@
 </script>
 
 <div class="notice_backimg">
-	<h3 id="hotelfive">Hotel Five</h3>
+	<h3 id="sevenfactory">Together</h3>
 	<h1 id="pagetitle">Community</h1>
-	<p id="explain">호텔파이브의 각종 이벤트 및 소식</p>
+	<p id="explain">투개더의 각종 이벤트 및 소식</p>
 </div>
 
 <div class="board-insert-box">
-	<img id="writing_name" alt="writing_name" src="resources/assets/name_img/writing_name1.png"/><br/> 
+	<img id="writing_name" alt="writing_name" src="resources/assets/name_img/writing_name2.png"/><br/> 
 	<form method="POST" enctype="multipart/form-data">
 		<table class="name-title">
 				<tr>
@@ -125,22 +125,10 @@
 					<td><input type="text" name="rTitle" autofocus /></td>
 				</tr>
 				<tr>
-					<td>어느 방에서 <br/>묵으셨나요?</td>
+					<td>이용하신 객실명</td>
 					<td>
-					<select name="gName" id="rooms">
-					      <option value="">::방번호::</option>
-					    <optgroup label="A동">
-					      <option value="A101">A101</option>
-					      <option value="A102">A102</option>
-					    </optgroup>
-					    <optgroup label="B동">
-					      <option value="B201">B201</option>
-					      <option value="B202">B202</option>
-					    </optgroup>
-					    <optgroup label="C동">
-					      <option value="C301">C301</option>
-					    </optgroup>
-					  </select>
+
+					<input type="text" name="gName" value="${gName }" readonly/>
 					 </td>
 				</tr>
 			</table>
@@ -177,7 +165,7 @@
 			</table>
 			<input type="button" value="SAVE" onclick="fn_insertBoard(this.form)" />
 			<input type="reset" value="RESET" />
-			<input type="button" value="LIST" onclick="fn_boardListPage()" />
+			<input type="button" value="GO BACK" onclick="fn_boardListPage()" />
 	</form>
 </div>
 

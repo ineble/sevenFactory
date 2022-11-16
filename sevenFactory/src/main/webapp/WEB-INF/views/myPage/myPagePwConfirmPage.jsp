@@ -56,6 +56,7 @@
 <div class="myPagePwConfirm-wrap">
 
 		<form>
+		<br><br><br><br>
 			<div class="centered">
 				<h2>회원정보 변경</h2>
 				<h4>회원님의 정보를 안전하게 보호하기 위해 비밀번호를 다시 한번 확인해 주세요.</h4>

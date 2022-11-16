@@ -11,7 +11,7 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="com.koreait.hotelfive">
+	<logger name="com.koreait.sevenfactory">
 		<level value="info" />
 	</logger>
 	

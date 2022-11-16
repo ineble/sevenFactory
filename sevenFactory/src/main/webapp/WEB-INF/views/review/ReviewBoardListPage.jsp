@@ -42,9 +42,9 @@
 
 <div class="ReviewBoard-list-box">
    <img id="review_name" alt="notice_name" src="resources/assets/name_img/review_name2.png"/><br/> 
-   <c:if test="${loginDTO ne null }">
+  <%--  <c:if test="${loginDTO ne null }">
       <a class="reviewInsertBtn" href='ReviewBoardInsertPage' ><i class="fas fa-user-edit fa-2x"></i>게시물 작성</a>
-   </c:if>
+   </c:if> --%>
    <br/><br/>
    
    <table>
@@ -76,12 +76,9 @@
          </c:if>
       </tbody>
       <tfoot>
-         <c:if test="${pageView ne null }">
-               <td colspan="5">${pageView}</td>
-            </c:if>
-            <c:if test="${pageView2 ne null }">
-               <td colspan="5">${pageView2}</td>
-            </c:if>
+      <tr>
+               <td colspan="5">${pageView}</td> 
+      </tr>
       </tfoot>
    </table>
 </div>

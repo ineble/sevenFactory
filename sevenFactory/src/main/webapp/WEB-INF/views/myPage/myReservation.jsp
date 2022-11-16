@@ -3,7 +3,10 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.util.*, java.text.*"  %>
-
+<!-- <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script>
+history.replaceState({}, null, location.pathname);
+</script>   -->
 
 <style>
    tr, td {text-align: center;}
@@ -67,10 +70,9 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
 
-<br><br><br><br><br><br><br><br><br><br>
-
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
    <div class="container">
-   	 <h3 class="text-center">${loginDTO.mName } 님 예약내역</h3>
+   	 <h3 class="text-center">${sellerDTO.mName } 님 예약내역</h3>
    	 <br>
    	 <table class="table table-hover">
    	 	<thead>
@@ -109,6 +111,9 @@
 								</td>
 								<td>
 									<input class="cancelBtn" type="button" value="예약취소" onclick="fn_ReservationCancel(this.form)">
+								</td>
+								<td>
+									<a class="reviewInsertBtn" href='ReviewBoardInsertPage?gName=${rDTO.gName }&mNo=${rDTO.mNo}&hNo=${rDTO.hNo}' ><i class="fas fa-user-edit fa-2x" style="font-size: 15px;"></i>리뷰작성하러 가기</a>
 								</td>
 							</c:if>
 							<c:if test="${rDTO.rApproval eq 1}"> <!-- 승인완료 -->

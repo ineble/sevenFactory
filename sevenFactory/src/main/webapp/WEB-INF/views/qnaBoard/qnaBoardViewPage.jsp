@@ -287,14 +287,14 @@
       padding-top: 300px;   
    }
    #pagetitle {font-size: 85px;}
-   #hotelfive, #explain {font-weight: bold;}
+   #sevenfactory, #explain {font-weight: bold;}
    #explain {font-size: 15px;}
    #qna_name {width: 200px;}
 </style>
 <div class="qna_backimg">
-   <h3 id="hotelfive">Hotel Five</h3>
+   <h3 id="sevenfactory">Together</h3>
    <h1 id="pagetitle">Community</h1>
-   <p id="explain">호텔파이브에 대한 관련 질문</p>
+   <p id="explain">투개더에 대한 관련 질문</p>
 </div>
 <div class="qnaBoard-viewBox">
 	<img id="qna_name" alt="qna_name" src="resources/assets/name_img/qna_name.png"/><br/> 

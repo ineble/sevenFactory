@@ -66,13 +66,13 @@ function findZipCodeBtn() {
 <script type="text/javascript">
 
 	$(document).ready(function(){
-		var regExpPW = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[~!@#$%^&*])[A-Za-z0-9~!@#$%^&*]{4,20}$/;
+		var regExpPW = /^(?=.*[a-z])(?=.*[0-9])(?=.*[~!@#$%^&*])[a-z0-9~!@#$%^&*]{4,20}$/;
 		$('#mPw').keyup(function() {
 			if( regExpPW.test($('#mPw').val()) ){
 				$('#pwCheckResult').text('비밀번호 사용 가능합니다.');
 				$('#pwCheckResult').css('color', 'blue').css('font-weight', 'bold');
 			} else {
-				$('#pwCheckResult').text('4~20, 대문자, 소문자, 숫자, 특수문자 (~!@#$%^&*) 포함');
+				$('#pwCheckResult').text('4~20, 소문자, 숫자, 특수문자 (~!@#$%^&*) 포함');
 				$('#pwCheckResult').css('color', 'red');
 			}
 			if( $('#mPw').val() == '' || $('#mPw').val() == null){
@@ -243,7 +243,7 @@ function findZipCodeBtn() {
 					<tr>
 						<td>*휴대폰번호</td>
 						<td>
-							<input id="mPhone" type="text" name="mPhone" value="${mDTO.mPhone}" placeholder="하이픈(-)포함" style="width:200px;"/>
+							<input id="mPhone" type="text" name="mPhone" value="${mDTO.mPhone}" placeholder="ex)01000000000" style="width:200px;"/>
 							<span id="phoneCheckResult"></span>
 						</td>
 					</tr>
